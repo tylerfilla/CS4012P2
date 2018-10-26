@@ -22,8 +22,10 @@ public class ProfileController {
     @GetMapping
     public String get(HttpSession session) {
         // If not logged in, redirect to login page
-        if (session.getAttribute("user") == null)
+        if (session.getAttribute("user") == null) {
+            log.debug("Not logged in, redirect to login page");
             return "redirect:/login";
+        }
 
         // TODO: Set up model
 

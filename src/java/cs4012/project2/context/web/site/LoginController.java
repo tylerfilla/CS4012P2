@@ -5,8 +5,10 @@
 
 package cs4012.project2.context.web.site;
 
+import cs4012.project2.context.web.site.service.AuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,66 +24,64 @@ public class LoginController {
 
     private static final Logger log = LogManager.getLogger();
 
+    @Autowired
+    private AuthService mAuthService;
+
     @GetMapping
-    public String get(Model model) {
+    public String get(Model model, HttpSession session) {
+        // If logged in, redirect to profile page
+        if (session.getAttribute("user") != null) {
+            log.debug("Logged in, redirect to profile page");
+            return "redirect:/profile";
+        }
+
+        // Set up user attribute
         model.addAttribute("user", new User());
+
         return "login";
     }
 
     @PostMapping
     public String post(@ModelAttribute User user, HttpSession session) {
-        // TODO: Check username and password
+        // Do the login
+        doLogin(user, session);
 
-        // TODO: Place user ID in session scope
-        session.setAttribute("user", 0);
-
+        // Redirect to index
         return "redirect:/";
     }
 
     /**
-     * A user object.
+     * Carry out the login process.
+     *
+     * @param user    The user details
+     * @param session The HTTP session
      */
+    private void doLogin(User user, HttpSession session) {
+        log.debug("Logging in user: " + user.getUsername());
+
+        // TODO: Perform login
+        mAuthService.logInUser();
+        session.setAttribute("user", "asdf");
+    }
+
+    @SuppressWarnings("WeakerAccess")
     public static class User {
 
-        /**
-         * The user username.
-         */
         private String mUsername;
-
-        /**
-         * The user password.
-         */
         private String mPassword;
 
-        public User() {
-            mUsername = "";
-            mPassword = "";
-        }
-
-        /**
-         * @return The user username
-         */
         public String getUsername() {
             return mUsername;
         }
 
-        /**
-         * @param pUsername The user username
-         */
         public void setUsername(String pUsername) {
             mUsername = pUsername;
         }
 
-        /**
-         * @return The user password
-         */
         public String getPassword() {
             return mPassword;
         }
 
-        /**
-         * @param pPassword The user password
-         */
         public void setPassword(String pPassword) {
             mPassword = pPassword;
         }
