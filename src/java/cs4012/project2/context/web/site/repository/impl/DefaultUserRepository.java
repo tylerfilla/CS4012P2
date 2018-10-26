@@ -70,4 +70,9 @@ public class DefaultUserRepository implements UserRepository {
     public void deleteAll() {
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return Optional.empty();
+    }
+
 }

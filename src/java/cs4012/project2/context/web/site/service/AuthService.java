@@ -7,8 +7,8 @@ package cs4012.project2.context.web.site.service;
 
 public interface AuthService {
 
-    void logInUser();
+    long checkUser(String username, String password);
 
-    void registerUser();
+    void register(String username, String password, String firstName, String lastName, String addrBody, String addrCity, String addrState, String addrZip);
 
 }
