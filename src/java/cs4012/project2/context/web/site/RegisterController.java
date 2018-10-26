@@ -18,7 +18,7 @@ public class RegisterController {
     private static final Logger log = LogManager.getLogger();
 
     @GetMapping
-    public String getIndex() {
+    public String get() {
         return "register";
     }
 

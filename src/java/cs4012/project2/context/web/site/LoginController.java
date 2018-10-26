@@ -18,7 +18,7 @@ public class LoginController {
     private static final Logger log = LogManager.getLogger();
 
     @GetMapping
-    public String getIndex() {
+    public String get() {
         return "login";
     }
 

@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("profile")
-public class ProfileController {
+@RequestMapping
+public class IndexController {
 
     private static final Logger log = LogManager.getLogger();
 
     @GetMapping
     public String get() {
-        return "profile";
+        return "redirect:/profile";
     }
 
 }
