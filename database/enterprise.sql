@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2018 at 02:29 AM
+-- Generation Time: Oct 26, 2018 at 07:21 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -35,7 +35,7 @@ CREATE TABLE `edu` (
   `degree_type` varchar(64) NOT NULL COMMENT 'The degree type',
   `degree_discipline` varchar(64) NOT NULL COMMENT 'The degree discipline',
   `year` int(11) NOT NULL COMMENT 'The year of achievement'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='A table of education history';
 
 -- --------------------------------------------------------
 
@@ -44,9 +44,11 @@ CREATE TABLE `edu` (
 --
 
 CREATE TABLE `user` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'The user ID',
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'The unique ID',
   `username` varchar(64) NOT NULL COMMENT 'The username',
   `password` varchar(256) NOT NULL COMMENT 'The password (insecure)',
+  `fname` varchar(64) NOT NULL COMMENT 'The user first name',
+  `lname` varchar(64) NOT NULL COMMENT 'The user last name',
   `addr_body` varchar(512) NOT NULL COMMENT 'The address body',
   `addr_city` varchar(32) NOT NULL COMMENT 'The address city',
   `addr_state` varchar(32) NOT NULL COMMENT 'The address state',
@@ -55,7 +57,7 @@ CREATE TABLE `user` (
   `phone_home` varchar(32) NOT NULL COMMENT 'The user home phone number',
   `phone_cell` varchar(32) NOT NULL COMMENT 'The user cell phone number',
   `time_zone` varchar(32) NOT NULL COMMENT 'The user time zone',
-  `profile_image` longblob NOT NULL COMMENT 'The user profile picture'
+  `profile_image` longblob NOT NULL COMMENT 'The user profile image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='User information table';
 
 -- --------------------------------------------------------
@@ -70,7 +72,7 @@ CREATE TABLE `work` (
   `company` varchar(256) NOT NULL COMMENT 'The company name',
   `title` varchar(256) NOT NULL COMMENT 'The title held',
   `years` int(11) NOT NULL COMMENT 'Years of service'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Work history mappings';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='A table of work history';
 
 --
 -- Indexes for dumped tables
@@ -111,7 +113,7 @@ ALTER TABLE `edu`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The user ID';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID';
 
 --
 -- AUTO_INCREMENT for table `work`
