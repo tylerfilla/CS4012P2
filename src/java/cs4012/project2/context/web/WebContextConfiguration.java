@@ -15,6 +15,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 @Configuration
 @ComponentScan
 @EnableWebMvc
@@ -32,6 +36,23 @@ public class WebContextConfiguration {
      */
     private static final String VIEW_RESOLVER_SUFFIX = ".jsp";
 
+    /**
+     * The path for database connection.
+     */
+    private static final String DB_PATH = "jdbc:mysql://localhost:3306/enterprise";
+
+    /**
+     * The username for database connection.
+     * TODO: Set to "root" before submit
+     */
+    private static final String DB_USERNAME = "mysql";
+
+    /**
+     * The password for database connection.
+     * TODO: Set to "" before submit
+     */
+    private static final String DB_PASSWORD = "password";
+
     @Bean
     public ViewResolver viewResolver() {
         log.trace("viewResolver");
@@ -41,6 +62,25 @@ public class WebContextConfiguration {
         resolver.setPrefix(VIEW_RESOLVER_PREFIX);
         resolver.setSuffix(VIEW_RESOLVER_SUFFIX);
         return resolver;
+    }
+
+    @Bean
+    public Connection dbConnection() {
+        log.trace("dbConnection");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            log.error("Unable to probe database driver", e);
+            throw new RuntimeException(e);
+        }
+
+        try {
+            return DriverManager.getConnection(DB_PATH, DB_USERNAME, DB_PASSWORD);
+        } catch (SQLException e) {
+            log.error("Unable to connect to database", e);
+            throw new RuntimeException(e);
+        }
     }
 
 }
