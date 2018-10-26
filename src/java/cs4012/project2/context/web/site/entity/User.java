@@ -30,6 +30,16 @@ public class User {
     private String mPassword;
 
     /**
+     * The user first name.
+     */
+    private String mFname;
+
+    /**
+     * The user last name.
+     */
+    private String mLname;
+
+    /**
      * The address body.
      */
     private String mAddrBody;
@@ -78,6 +88,8 @@ public class User {
         mId = -1;
         mUsername = "";
         mPassword = "";
+        mFname = "";
+        mLname = "";
         mAddrBody = "";
         mAddrCity = "";
         mAddrState = "";
@@ -129,6 +141,34 @@ public class User {
      */
     public void setPassword(String pPassword) {
         mPassword = pPassword;
+    }
+
+    /**
+     * @return The user first name
+     */
+    public String getFname() {
+        return mFname;
+    }
+
+    /**
+     * @param pFname The user first name
+     */
+    public void setFname(String pFname) {
+        mFname = pFname;
+    }
+
+    /**
+     * @return The user last name
+     */
+    public String getLname() {
+        return mLname;
+    }
+
+    /**
+     * @param pLname The user last name
+     */
+    public void setLname(String pLname) {
+        mLname = pLname;
     }
 
     /**
