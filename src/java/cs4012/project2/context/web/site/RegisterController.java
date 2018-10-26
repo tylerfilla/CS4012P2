@@ -40,6 +40,7 @@ public class RegisterController {
             log.debug("Received registration via GET");
 
             // Do the registration
+            // TODO: Handle errors
             doRegistration((Registration) model.asMap().get("registration"), session);
 
             // Redirect to index
@@ -57,6 +58,7 @@ public class RegisterController {
         log.debug("Received registration via POST");
 
         // Submitting via POST, so do the registration
+        // TODO: Handle errors
         doRegistration(registration, session);
 
         // Redirect to index
@@ -66,14 +68,18 @@ public class RegisterController {
     /**
      * Carry out the registration process.
      *
+     * This is for demonstration purposes only (not for any secure use).
+     *
      * @param registration The registration details
      * @param session      The HTTP session
      */
     private void doRegistration(Registration registration, HttpSession session) {
         log.debug("Registering user: " + registration.getUsername());
 
-        // TODO: Perform registration
-        //mAuthService.registerUser();
+        // Perform the registration
+        mAuthService.register(registration.getUsername(), registration.getPassword(), registration.getFname(),
+                registration.getLname(), registration.getAddrBody(), registration.getAddrCity(),
+                registration.getAddrState(), registration.getAddrZip());
     }
 
     @SuppressWarnings("WeakerAccess")

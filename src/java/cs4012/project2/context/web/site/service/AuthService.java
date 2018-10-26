@@ -9,6 +9,6 @@ public interface AuthService {
 
     long checkUser(String username, String password);
 
-    void register(String username, String password, String firstName, String lastName, String addrBody, String addrCity, String addrState, String addrZip);
+    long register(String username, String password, String fname, String lname, String addrBody, String addrCity, String addrState, String addrZip);
 
 }

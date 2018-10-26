@@ -53,6 +53,8 @@ public class LoginController {
     /**
      * Carry out the login process.
      *
+     * This is for demonstration purposes only (not for any secure use).
+     *
      * @param user    The user details
      * @param session The HTTP session
      */

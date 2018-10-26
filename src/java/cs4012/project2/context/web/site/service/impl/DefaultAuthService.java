@@ -11,14 +11,12 @@ import cs4012.project2.context.web.site.service.AuthService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.Optional;
 
 @Service
 public class DefaultAuthService implements AuthService {
 
     @Inject
-    @Named("defaultUserRepository")
     private UserRepository mUserRepository;
 
     @Override
@@ -36,7 +34,27 @@ public class DefaultAuthService implements AuthService {
     }
 
     @Override
-    public void register(String username, String password, String firstName, String lastName, String addrBody, String addrCity, String addrState, String addrZip) {
+    public long register(String username, String password, String fname, String lname, String addrBody, String addrCity, String addrState, String addrZip) {
+        // If username is taken
+        if (mUserRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        // Build user object
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFname(fname);
+        user.setLname(lname);
+        user.setAddrBody(addrBody);
+        user.setAddrCity(addrCity);
+        user.setAddrState(addrState);
+        user.setAddrZip(addrZip);
+
+        // Save the user
+        user = mUserRepository.save(user);
+
+        return user.getId();
     }
 
 }
