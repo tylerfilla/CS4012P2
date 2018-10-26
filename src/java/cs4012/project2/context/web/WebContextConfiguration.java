@@ -5,6 +5,8 @@
 
 package cs4012.project2.context.web;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,8 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 public class WebContextConfiguration {
 
+    private static final Logger log = LogManager.getLogger();
+
     /**
      * The prefix for view resolution.
      */
@@ -30,10 +34,13 @@ public class WebContextConfiguration {
 
     @Bean
     public ViewResolver viewResolver() {
+        log.trace("viewResolver");
+
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
         resolver.setPrefix(VIEW_RESOLVER_PREFIX);
         resolver.setSuffix(VIEW_RESOLVER_SUFFIX);
         return resolver;
     }
+
 }
