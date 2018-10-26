@@ -22,4 +22,9 @@ public class RegisterController {
         return "register";
     }
 
+    public String post() {
+        // TODO: Perform registration
+        return "redirect:/";
+    }
+
 }
