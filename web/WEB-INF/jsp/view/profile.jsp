@@ -26,18 +26,19 @@
 </form>
 <h3>Password</h3>
 <form method="post" action="/profile/password">
-    <input type="password" name="password"/><br>
+    <input type="password" name="password" placeholder="New Password"/><br>
     <input type="submit" value="Update Password"/>
 </form>
 <h3>Contact Info</h3>
 <form method="post" action="/profile/contactInfo">
-    <input type="text" name="addrBody"/><br>
-    <input type="text" name="addrCity"/><br>
-    <input type="text" name="addrState"/><br>
-    <input type="text" name="addrZip"/><br>
-    <input type="text" name="phoneHome"/><br>
-    <input type="text" name="phoneCell"/><br>
+    <input type="text" name="addrBody" placeholder="${user.addrBody}"/><br>
+    <input type="text" name="addrCity" placeholder="${user.addrCity}"/><br>
+    <input type="text" name="addrState" placeholder="${user.addrState}"/><br>
+    <input type="text" name="addrZip" placeholder="${user.addrZip}"/><br>
+    <input type="text" name="phoneHome" placeholder="${user.phoneHome}"/><br>
+    <input type="text" name="phoneCell" placeholder="${user.phoneCell}"/><br>
     <input type="submit" value="Update Contact Info"/>
 </form>
+<a href="?logout=1">Log out</a>
 </body>
 </html>

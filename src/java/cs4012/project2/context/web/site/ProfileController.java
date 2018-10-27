@@ -11,6 +11,7 @@ import cs4012.project2.context.web.site.entity.User;
 import cs4012.project2.context.web.site.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +42,17 @@ public class ProfileController {
     private UserService mUserService;
 
     @GetMapping
-    public String get(Model model, HttpSession session) {
+    public String get(@RequestParam(required = false) String logout, Model model, HttpSession session) {
         // If not logged in, redirect to login page
         if (session.getAttribute("user") == null) {
             log.debug("Not logged in, redirect to login page");
+            return "redirect:/login";
+        }
+
+        // If user wants to log out
+        if (logout != null) {
+            log.debug("Logging out user: " + session.getAttribute("user"));
+            session.removeAttribute("user");
             return "redirect:/login";
         }
 
@@ -156,16 +164,43 @@ public class ProfileController {
     }
 
     @PostMapping("/password")
-    public String postPassword(@RequestParam String password) {
+    public String postPassword(@RequestParam String password, HttpSession session) {
+        // If not logged in, redirect to login page
+        if (session.getAttribute("user") == null) {
+            log.debug("Not logged in, redirect to login page");
+            return "redirect:/login";
+        }
+
         log.debug("Got password of size " + password.length());
+
+        // Update password
+        User user = mUserService.getUser((long) session.getAttribute("user"));
+        user.setPassword(password);
+        mUserService.updateUser(user);
 
         // Redirect to profile
         return "redirect:/profile";
     }
 
     @PostMapping("/contactInfo")
-    public String postContact(@RequestParam String addrBody, @RequestParam String addrCity, @RequestParam String addrState, @RequestParam String addrZip, @RequestParam String phoneHome, @RequestParam String phoneCell) {
+    public String postContact(@RequestParam String addrBody, @RequestParam String addrCity, @RequestParam String addrState, @RequestParam String addrZip, @RequestParam String phoneHome, @RequestParam String phoneCell, HttpSession session) {
+        // If not logged in, redirect to login page
+        if (session.getAttribute("user") == null) {
+            log.debug("Not logged in, redirect to login page");
+            return "redirect:/login";
+        }
+
         log.debug("Got contact info: " + addrBody + ", " + addrCity + ", " + addrState + ", " + addrZip + ", " + phoneHome + ", " + phoneCell);
+
+        // Update contact info
+        User user = mUserService.getUser((long) session.getAttribute("user"));
+        user.setAddrBody(addrBody);
+        user.setAddrCity(addrCity);
+        user.setAddrState(addrState);
+        user.setAddrZip(addrZip);
+        user.setPhoneHome(phoneHome);
+        user.setPhoneCell(phoneCell);
+        mUserService.updateUser(user);
 
         // Redirect to profile
         return "redirect:/profile";
