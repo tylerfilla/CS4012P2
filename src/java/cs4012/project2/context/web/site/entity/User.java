@@ -94,11 +94,11 @@ public class User {
         mAddrCity = "";
         mAddrState = "";
         mAddrZip = "";
-        mBirthday = Date.valueOf(LocalDate.MIN);
+        mBirthday = Date.valueOf(LocalDate.now());
         mPhoneHome = "";
         mPhoneCell = "";
         mTimeZone = "";
-        mProfileImage = null;
+        mProfileImage = new com.mysql.cj.jdbc.Blob(new byte[] {}, null);
     }
 
     /**
