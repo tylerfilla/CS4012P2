@@ -1,3 +1,4 @@
+<%--@elvariable id="user" type="cs4012.project2.context.web.site.entity.User"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -6,13 +7,12 @@
 </head>
 <body>
 <h1>Profile</h1>
-<%--@elvariable id="update" type="cs4012.project2.context.web.site.ProfileController.Update"--%>
 <h3>Basic Info</h3>
-<form method="post" action="/profile/basic">
-    <input type="text" name="fname"/><br>
-    <input type="text" name="lname"/><br>
-    <input type="text" name="birthday"/><br>
-    <input type="text" name="timeZone"/><br>
+<form method="post" action="/profile/basicInfo">
+    <input type="text" name="fname" placeholder="${user.fname}"/><br>
+    <input type="text" name="lname" placeholder="${user.lname}"/><br>
+    <input type="text" name="birthday" placeholder="${user.birthday}"/><br>
+    <input type="text" name="timeZone" placeholder="${user.timeZone}"/><br>
     <input type="submit" value="Update Basic Info"/>
 </form>
 <h3>Profile Image</h3>
@@ -26,7 +26,7 @@
     <input type="submit" value="Update Password"/>
 </form>
 <h3>Contact Info</h3>
-<form method="post" action="/profile/contact">
+<form method="post" action="/profile/contactInfo">
     <input type="text" name="addrBody"/><br>
     <input type="text" name="addrCity"/><br>
     <input type="text" name="addrState"/><br>

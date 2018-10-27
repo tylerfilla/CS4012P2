@@ -27,34 +27,60 @@ public class DefaultUserRepository implements UserRepository {
     public <S extends User> S save(S user) {
         log.debug("Saving user: " + user.getUsername());
 
-        try {
-            // Insert user data
-            PreparedStatement st = mConnection.prepareStatement("INSERT INTO `user` (username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            st.setString(1, user.getUsername());
-            st.setString(2, user.getPassword());
-            st.setString(3, user.getFname());
-            st.setString(4, user.getLname());
-            st.setString(5, user.getAddrBody());
-            st.setString(6, user.getAddrCity());
-            st.setString(7, user.getAddrState());
-            st.setString(8, user.getAddrZip());
-            st.setDate(9, user.getBirthday());
-            st.setString(10, user.getPhoneHome());
-            st.setString(11, user.getPhoneCell());
-            st.setString(12, user.getTimeZone());
-            st.setBlob(13, user.getProfileImage());
-            st.executeUpdate();
+        if (existsById(user.getId())) {
+            try {
+                PreparedStatement st = mConnection.prepareStatement("UPDATE `user` SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `addr_body` = ?, `addr_city` = ?, `addr_state` = ?, `addr_zip` = ?, `birthday` = ?, `phone_home` = ?, `phone_cell` = ?, `time_zone` = ?, `profile_image` = ? WHERE `id` = ?");
+                st.setString(1, user.getUsername());
+                st.setString(2, user.getPassword());
+                st.setString(3, user.getFname());
+                st.setString(4, user.getLname());
+                st.setString(5, user.getAddrBody());
+                st.setString(6, user.getAddrCity());
+                st.setString(7, user.getAddrState());
+                st.setString(8, user.getAddrZip());
+                st.setDate(9, user.getBirthday());
+                st.setString(10, user.getPhoneHome());
+                st.setString(11, user.getPhoneCell());
+                st.setString(12, user.getTimeZone());
+                st.setBlob(13, user.getProfileImage());
+                st.setLong(14, user.getId());
+                st.executeUpdate();
 
-            // Fetch auto-generated ID
-            ResultSet results = st.getGeneratedKeys();
-            if (results.next()) {
-                user.setId(results.getInt(1));
+                return user;
+            } catch (SQLException e) {
+                log.error("Could not save existing user", e);
+                throw new RuntimeException(e);
             }
+        } else {
+            try {
+                // Insert user data
+                PreparedStatement st = mConnection.prepareStatement("INSERT INTO `user` (username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                st.setString(1, user.getUsername());
+                st.setString(2, user.getPassword());
+                st.setString(3, user.getFname());
+                st.setString(4, user.getLname());
+                st.setString(5, user.getAddrBody());
+                st.setString(6, user.getAddrCity());
+                st.setString(7, user.getAddrState());
+                st.setString(8, user.getAddrZip());
+                st.setDate(9, user.getBirthday());
+                st.setString(10, user.getPhoneHome());
+                st.setString(11, user.getPhoneCell());
+                st.setString(12, user.getTimeZone());
+                st.setBlob(13, user.getProfileImage());
+                st.executeUpdate();
 
-            return user;
-        } catch (SQLException e) {
-            log.error("Could not save user", e);
-            throw new RuntimeException(e);
+                // Fetch auto-generated ID
+                ResultSet results = st.getGeneratedKeys();
+                if (results.next()) {
+                    user.setId(results.getInt(1));
+                }
+
+                return user;
+            } catch (SQLException e) {
+                log.error("Could not save new user", e);
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -68,7 +94,7 @@ public class DefaultUserRepository implements UserRepository {
         log.debug("Find user by ID: " + id);
 
         try {
-            PreparedStatement st = mConnection.prepareStatement("SELECT * FROM `user` WHERE `id` = ?");
+            PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `id` = ?");
             st.setLong(1, id);
             return Optional.ofNullable(fetchUser(st.executeQuery()));
         } catch (SQLException e) {
@@ -79,7 +105,14 @@ public class DefaultUserRepository implements UserRepository {
 
     @Override
     public boolean existsById(Long id) {
-        throw new RuntimeException("Not implemented!");
+        try {
+            PreparedStatement st = mConnection.prepareStatement("SELECT `id` FROM `user` WHERE `id` = ?");
+            st.setLong(1, id);
+            return st.executeQuery().next();
+        } catch (SQLException e) {
+            log.error("Could not check for existence by ID", e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -122,7 +155,7 @@ public class DefaultUserRepository implements UserRepository {
         log.debug("Find user by username: " + username);
 
         try {
-            PreparedStatement st = mConnection.prepareStatement("SELECT * FROM `user` WHERE `username` = ?");
+            PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `username` = ?");
             st.setString(1, username);
             return Optional.ofNullable(fetchUser(st.executeQuery()));
         } catch (SQLException e) {
@@ -143,7 +176,7 @@ public class DefaultUserRepository implements UserRepository {
             user.setLname(results.getString(5));
             user.setAddrBody(results.getString(6));
             user.setAddrCity(results.getString(7));
-            user.setAddrCity(results.getString(8));
+            user.setAddrState(results.getString(8));
             user.setAddrZip(results.getString(9));
             user.setBirthday(results.getDate(10));
             user.setPhoneHome(results.getString(11));
