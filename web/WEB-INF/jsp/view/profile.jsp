@@ -1,4 +1,6 @@
 <%--@elvariable id="user" type="cs4012.project2.context.web.site.entity.User"--%>
+<%--@elvariable id="profileImageOrig" type="java.lang.String"--%>
+<%--@elvariable id="profileImageScaled" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -7,6 +9,7 @@
 </head>
 <body>
 <h1>Profile</h1>
+<img src="data:image/jpeg;base64,${profileImageOrig}"/>
 <h3>Basic Info</h3>
 <form method="post" action="/profile/basicInfo">
     <input type="text" name="fname" placeholder="${user.fname}"/><br>
@@ -16,7 +19,8 @@
     <input type="submit" value="Update Basic Info"/>
 </form>
 <h3>Profile Image</h3>
-<form method="post" enctype="multipart/form-data" action="/profile/profileImage">
+<img src="data:image/jpeg;base64,${profileImageScaled}"/>
+<form method="post" enctype="multipart/form-data" action="/profile/image">
     <input type="file" name="image"/><br>
     <input type="submit" value="Update Profile Image"/>
 </form>
