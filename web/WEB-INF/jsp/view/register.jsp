@@ -64,6 +64,15 @@
                         <form:input type="addrZip" class="form-control" id="addrZip" path="addrZip" required="1"/>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="method" class="col-md-4 col-form-label text-md-right">Method</label>
+                    <div class="col-md-6">
+                        <select id="method" class="form-control" onchange="this.form.method = this.value;">
+                            <option value="post" selected>POST (default)</option>
+                            <option value="get">GET</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">Register</button>
                     <a href="<c:url value="/login"/>" class="btn btn-link">Back to login</a>

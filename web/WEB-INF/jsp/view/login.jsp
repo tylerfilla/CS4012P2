@@ -21,12 +21,17 @@
                     </div>
                 </c:when>
                 <c:when test="${not empty param.logout}">
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-primary" role="alert">
                         You were successfully logged out. Have a nice day!
                     </div>
                 </c:when>
+                <c:when test="${not empty param.registered}">
+                    <div class="alert alert-success" role="alert">
+                        Your account was successfully registered via ${param.regmethod.toUpperCase()}! Please log in.
+                    </div>
+                </c:when>
                 <c:otherwise>
-                    <div class="alert alert-primary" role="alert">
+                    <div class="alert alert-dark" role="alert">
                         Welcome! Please log in or register below.
                     </div>
                 </c:otherwise>

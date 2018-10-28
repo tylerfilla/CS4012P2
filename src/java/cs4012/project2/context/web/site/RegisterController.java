@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -28,7 +30,7 @@ public class RegisterController {
     private AuthService mAuthService;
 
     @GetMapping
-    public String get(Model model, HttpSession session) {
+    public String get(Model model, HttpServletRequest request, HttpSession session) {
         // If logged in, redirect to profile page
         if (session.getAttribute("user") != null) {
             log.debug("Logged in, redirect to profile page");
@@ -36,15 +38,26 @@ public class RegisterController {
         }
 
         // If submitting via GET
-        if (model.containsAttribute("registration")) {
+        if (request.getParameter("username") != null) {
             log.debug("Received registration via GET");
+
+            // Build faux model object
+            Registration registration = new Registration();
+            registration.setUsername(request.getParameter("username"));
+            registration.setPassword(request.getParameter("password"));
+            registration.setFname(request.getParameter("fname"));
+            registration.setLname(request.getParameter("lname"));
+            registration.setAddrBody(request.getParameter("addrBody"));
+            registration.setAddrCity(request.getParameter("addrCity"));
+            registration.setAddrState(request.getParameter("addrState"));
+            registration.setAddrZip(request.getParameter("addrZip"));
 
             // Do the registration
             // TODO: Handle errors
-            doRegistration((Registration) model.asMap().get("registration"), session);
+            doRegistration(registration);
 
-            // Redirect to index
-            return "redirect:/";
+            // Redirect to login
+            return "redirect:/login?registered=1&regmethod=get";
         }
 
         // Set up registration attribute
@@ -54,15 +67,15 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String post(@ModelAttribute Registration registration, HttpSession session) {
+    public String post(@ModelAttribute Registration registration) {
         log.debug("Received registration via POST");
 
         // Submitting via POST, so do the registration
         // TODO: Handle errors
-        doRegistration(registration, session);
+        doRegistration(registration);
 
-        // Redirect to index
-        return "redirect:/";
+        // Redirect to login
+        return "redirect:/login?registered=1&regmethod=post";
     }
 
     /**
@@ -71,9 +84,8 @@ public class RegisterController {
      * This is for demonstration purposes only (not for any secure use).
      *
      * @param registration The registration details
-     * @param session      The HTTP session
      */
-    private void doRegistration(Registration registration, HttpSession session) {
+    private void doRegistration(Registration registration) {
         log.debug("Registering user: " + registration.getUsername());
 
         // Perform the registration
