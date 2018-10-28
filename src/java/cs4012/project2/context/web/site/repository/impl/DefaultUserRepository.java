@@ -28,8 +28,7 @@ public class DefaultUserRepository implements UserRepository {
         log.debug("Saving user: " + user.getUsername());
 
         if (existsById(user.getId())) {
-            try {
-                PreparedStatement st = mConnection.prepareStatement("UPDATE `user` SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `addr_body` = ?, `addr_city` = ?, `addr_state` = ?, `addr_zip` = ?, `birthday` = ?, `phone_home` = ?, `phone_cell` = ?, `time_zone` = ?, `profile_image` = ? WHERE `id` = ?");
+            try (PreparedStatement st = mConnection.prepareStatement("UPDATE `user` SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `addr_body` = ?, `addr_city` = ?, `addr_state` = ?, `addr_zip` = ?, `birthday` = ?, `phone_home` = ?, `phone_cell` = ?, `time_zone` = ?, `profile_image` = ? WHERE `id` = ?")) {
                 st.setString(1, user.getUsername());
                 st.setString(2, user.getPassword());
                 st.setString(3, user.getFname());
@@ -52,9 +51,8 @@ public class DefaultUserRepository implements UserRepository {
                 throw new RuntimeException(e);
             }
         } else {
-            try {
+            try (PreparedStatement st = mConnection.prepareStatement("INSERT INTO `user` (username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                 // Insert user data
-                PreparedStatement st = mConnection.prepareStatement("INSERT INTO `user` (username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 st.setString(1, user.getUsername());
                 st.setString(2, user.getPassword());
                 st.setString(3, user.getFname());
@@ -93,8 +91,7 @@ public class DefaultUserRepository implements UserRepository {
     public Optional<User> findById(Long id) {
         log.debug("Find user by ID: " + id);
 
-        try {
-            PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `id` = ?");
+        try (PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `id` = ?")) {
             st.setLong(1, id);
             return Optional.ofNullable(fetchUser(st.executeQuery()));
         } catch (SQLException e) {
@@ -105,8 +102,7 @@ public class DefaultUserRepository implements UserRepository {
 
     @Override
     public boolean existsById(Long id) {
-        try {
-            PreparedStatement st = mConnection.prepareStatement("SELECT `id` FROM `user` WHERE `id` = ?");
+        try (PreparedStatement st = mConnection.prepareStatement("SELECT `id` FROM `user` WHERE `id` = ?")) {
             st.setLong(1, id);
             return st.executeQuery().next();
         } catch (SQLException e) {
@@ -154,8 +150,7 @@ public class DefaultUserRepository implements UserRepository {
     public Optional<User> findByUsername(String username) {
         log.debug("Find user by username: " + username);
 
-        try {
-            PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `username` = ?");
+        try (PreparedStatement st = mConnection.prepareStatement("SELECT id, username, password, fname, lname, addr_body, addr_city, addr_state, addr_zip, birthday, phone_home, phone_cell, time_zone, profile_image FROM `user` WHERE `username` = ?")) {
             st.setString(1, username);
             return Optional.ofNullable(fetchUser(st.executeQuery()));
         } catch (SQLException e) {

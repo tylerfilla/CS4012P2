@@ -6,12 +6,14 @@
 package cs4012.project2.context.web.site;
 
 import com.mysql.cj.jdbc.Blob;
-import com.mysql.cj.jdbc.BlobFromLocator;
+import cs4012.project2.context.web.site.entity.Edu;
 import cs4012.project2.context.web.site.entity.User;
+import cs4012.project2.context.web.site.entity.Work;
+import cs4012.project2.context.web.site.service.EduService;
 import cs4012.project2.context.web.site.service.UserService;
+import cs4012.project2.context.web.site.service.WorkService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 @RequestMapping("profile")
@@ -39,7 +42,13 @@ public class ProfileController {
     private static final Logger log = LogManager.getLogger();
 
     @Inject
+    private EduService mEduService;
+
+    @Inject
     private UserService mUserService;
+
+    @Inject
+    private WorkService mWorkService;
 
     @GetMapping
     public String get(@RequestParam(required = false) String logout, Model model, HttpSession session) {
@@ -113,6 +122,14 @@ public class ProfileController {
 
         // Add user entity to model
         model.addAttribute("user", user);
+
+        // Get education elements
+        List<Edu> edus = mEduService.getUserEdus(user.getId());
+        model.addAttribute("edus", edus);
+
+        // Get work elements
+        List<Work> works = mWorkService.getUserWorks(user.getId());
+        model.addAttribute("works", works);
 
         return "profile";
     }

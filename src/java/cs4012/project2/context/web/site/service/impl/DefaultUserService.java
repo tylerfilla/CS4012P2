@@ -24,11 +24,13 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User getUser(long userId) {
+        log.debug("Get user: " + userId);
         return mUserRepository.findById(userId).orElse(null);
     }
 
     @Override
     public User updateUser(User user) {
+        log.debug("Update user: " + user.getId());
         return mUserRepository.save(user);
     }
 

@@ -1,7 +1,10 @@
 <%--@elvariable id="user" type="cs4012.project2.context.web.site.entity.User"--%>
 <%--@elvariable id="profileImageOrig" type="java.lang.String"--%>
 <%--@elvariable id="profileImageScaled" type="java.lang.String"--%>
+<%--@elvariable id="edus" type="java.util.List<cs4012.project2.context.web.site.entity.Edu>"--%>
+<%--@elvariable id="works" type="java.util.List<cs4012.project2.context.web.site.entity.Work>"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +12,7 @@
 </head>
 <body>
 <h1>Profile</h1>
+<a href="?logout=1">Log out</a>
 <img src="data:image/jpeg;base64,${profileImageOrig}"/>
 <h3>Basic Info</h3>
 <form method="post" action="/profile/basicInfo">
@@ -39,6 +43,17 @@
     <input type="text" name="phoneCell" placeholder="${user.phoneCell}"/><br>
     <input type="submit" value="Update Contact Info"/>
 </form>
-<a href="?logout=1">Log out</a>
+<h3>Education</h3>
+<div>
+    <c:forEach items="${edus}" var="edu">
+        <div>${edu.institution}</div>
+    </c:forEach>
+</div>
+<h3>Work Experience</h3>
+<div>
+    <c:forEach items="${works}" var="work">
+        <div>${work.company}</div>
+    </c:forEach>
+</div>
 </body>
 </html>

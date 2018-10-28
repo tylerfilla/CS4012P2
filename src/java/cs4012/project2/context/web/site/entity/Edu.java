@@ -21,6 +21,11 @@ public class Edu {
     private long mUser;
 
     /**
+     * The institution name.
+     */
+    private String mInstitution;
+
+    /**
      * The degree type.
      */
     private String mDegreeType;
@@ -38,6 +43,7 @@ public class Edu {
     public Edu() {
         mId = -1;
         mUser = -1;
+        mInstitution = "";
         mDegreeType = "";
         mDegreeDiscipline = "";
         mYear = 0;
@@ -69,6 +75,20 @@ public class Edu {
      */
     public void setUser(long pUser) {
         mUser = pUser;
+    }
+
+    /**
+     * @return The institution name
+     */
+    public String getInstitution() {
+        return mInstitution;
+    }
+
+    /**
+     * @param pInstitution The institution name
+     */
+    public void setInstitution(String pInstitution) {
+        mInstitution = pInstitution;
     }
 
     /**
