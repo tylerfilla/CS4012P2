@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2018 at 07:21 PM
+-- Generation Time: Oct 28, 2018 at 10:22 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -34,7 +34,7 @@ CREATE TABLE `edu` (
   `institution` varchar(256) NOT NULL COMMENT 'The institution name',
   `degree_type` varchar(64) NOT NULL COMMENT 'The degree type',
   `degree_discipline` varchar(64) NOT NULL COMMENT 'The degree discipline',
-  `year` int(11) NOT NULL COMMENT 'The year of achievement'
+  `year` int(11) UNSIGNED NOT NULL COMMENT 'The year of achievement'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='A table of education history';
 
 -- --------------------------------------------------------
@@ -71,7 +71,7 @@ CREATE TABLE `work` (
   `user` int(10) UNSIGNED NOT NULL COMMENT 'ID of the user',
   `company` varchar(256) NOT NULL COMMENT 'The company name',
   `title` varchar(256) NOT NULL COMMENT 'The title held',
-  `years` int(11) NOT NULL COMMENT 'Years of service'
+  `years` int(11) UNSIGNED NOT NULL COMMENT 'Years of service'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='A table of work history';
 
 --
@@ -107,19 +107,19 @@ ALTER TABLE `work`
 -- AUTO_INCREMENT for table `edu`
 --
 ALTER TABLE `edu`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID', AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID', AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `work`
 --
 ALTER TABLE `work`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'The unique ID', AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
