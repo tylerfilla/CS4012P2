@@ -15,7 +15,7 @@
         <div class="card-header">Register</div>
         <div class="card-body">
             <%--@elvariable id="registration" type="cs4012.project2.context.web.site.RegisterController$Registration"--%>
-            <form:form method="post" modelAttribute="registration">
+            <form:form method="post" action="/register/new" modelAttribute="registration">
                 <div class="form-group row">
                     <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
                     <div class="col-md-6">

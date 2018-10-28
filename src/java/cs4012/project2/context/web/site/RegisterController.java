@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -30,34 +28,11 @@ public class RegisterController {
     private AuthService mAuthService;
 
     @GetMapping
-    public String get(Model model, HttpServletRequest request, HttpSession session) {
+    public String get(Model model, HttpSession session) {
         // If logged in, redirect to profile page
         if (session.getAttribute("user") != null) {
             log.debug("Logged in, redirect to profile page");
             return "redirect:/profile";
-        }
-
-        // If submitting via GET
-        if (request.getParameter("username") != null) {
-            log.debug("Received registration via GET");
-
-            // Build faux model object
-            Registration registration = new Registration();
-            registration.setUsername(request.getParameter("username"));
-            registration.setPassword(request.getParameter("password"));
-            registration.setFname(request.getParameter("fname"));
-            registration.setLname(request.getParameter("lname"));
-            registration.setAddrBody(request.getParameter("addrBody"));
-            registration.setAddrCity(request.getParameter("addrCity"));
-            registration.setAddrState(request.getParameter("addrState"));
-            registration.setAddrZip(request.getParameter("addrZip"));
-
-            // Do the registration
-            // TODO: Handle errors
-            doRegistration(registration);
-
-            // Redirect to login
-            return "redirect:/login?registered=1&regmethod=get";
         }
 
         // Set up registration attribute
@@ -66,21 +41,18 @@ public class RegisterController {
         return "register";
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public String post(@ModelAttribute Registration registration) {
-        log.debug("Received registration via POST");
-
-        // Submitting via POST, so do the registration
-        // TODO: Handle errors
+        // Do the registration
         doRegistration(registration);
 
         // Redirect to login
-        return "redirect:/login?registered=1&regmethod=post";
+        return "redirect:/login?registered=1";
     }
 
     /**
      * Carry out the registration process.
-     *
+     * <p>
      * This is for demonstration purposes only (not for any secure use).
      *
      * @param registration The registration details

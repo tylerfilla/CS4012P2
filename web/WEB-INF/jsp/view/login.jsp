@@ -27,7 +27,7 @@
                 </c:when>
                 <c:when test="${not empty param.registered}">
                     <div class="alert alert-success" role="alert">
-                        Your account was successfully registered via ${param.regmethod.toUpperCase()}! Please log in.
+                        Your account was successfully registered! Please log in.
                     </div>
                 </c:when>
                 <c:otherwise>
