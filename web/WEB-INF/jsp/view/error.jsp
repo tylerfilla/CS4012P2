@@ -1,4 +1,4 @@
-<%--@elvariable id="code" type="int"--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -9,6 +9,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>HTTP error ${code}!</h1>
+<div class="container">
+    <div class="card">
+        <%--@elvariable id="code" type="int"--%>
+        <div class="card-header">Error ${code}</div>
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">Oops, that's an error! Try pressing your browser's back button.</div>
+            <a href="<c:url value="/"/>">Main Page</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
