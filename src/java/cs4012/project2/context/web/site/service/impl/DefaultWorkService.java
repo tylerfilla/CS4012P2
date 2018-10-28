@@ -37,6 +37,12 @@ public class DefaultWorkService implements WorkService {
     }
 
     @Override
+    public void deleteWork(long workId) {
+        log.debug("Delete work: " + workId);
+        mWorkRepository.deleteById(workId);
+    }
+
+    @Override
     public List<Work> getUserWorks(long userId) {
         List<Work> works = new ArrayList<>();
 

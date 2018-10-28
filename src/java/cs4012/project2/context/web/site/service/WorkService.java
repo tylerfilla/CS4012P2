@@ -15,6 +15,8 @@ public interface WorkService {
 
     Work updateWork(Work work);
 
+    void deleteWork(long workId);
+
     List<Work> getUserWorks(long userId);
 
 }

@@ -5,7 +5,6 @@
 
 package cs4012.project2.context.web.site.repository.impl;
 
-import cs4012.project2.context.web.site.entity.Edu;
 import cs4012.project2.context.web.site.entity.Work;
 import cs4012.project2.context.web.site.repository.WorkRepository;
 import org.apache.logging.log4j.LogManager;
@@ -13,10 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +26,36 @@ public class DefaultWorkRepository implements WorkRepository {
     private Connection mConnection;
 
     @Override
-    public <S extends Work> S save(S entity) {
-        throw new RuntimeException("Not implemented!");
+    public <S extends Work> S save(S work) {
+        log.debug("Saving work: " + work.getId());
+
+        if (existsById(work.getId())) {
+            throw new RuntimeException("Not implemented!");
+        } else {
+            try (PreparedStatement st = mConnection.prepareStatement("INSERT INTO `work` (`user`, `company`, `title`, `years`) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                // Insert work data
+                st.setLong(1, work.getUser());
+                st.setString(2, work.getCompany());
+                st.setString(3, work.getTitle());
+                st.setLong(4, work.getYears());
+                st.executeUpdate();
+
+                // Fetch auto-generated ID
+                ResultSet results = st.getGeneratedKeys();
+                if (results.next()) {
+                    work.setId(results.getInt(1));
+                }
+
+                return work;
+            } catch (SQLException e) {
+                log.error("Could not save new user", e);
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
-    public <S extends Work> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends Work> Iterable<S> saveAll(Iterable<S> works) {
         throw new RuntimeException("Not implemented!");
     }
 
@@ -67,7 +87,13 @@ public class DefaultWorkRepository implements WorkRepository {
 
     @Override
     public boolean existsById(Long id) {
-        throw new RuntimeException("Not implemented!");
+        try (PreparedStatement st = mConnection.prepareStatement("SELECT `id` FROM `edu` WHERE `id` = ?")) {
+            st.setLong(1, id);
+            return st.executeQuery().next();
+        } catch (SQLException e) {
+            log.error("Could not check for existence by ID", e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -87,16 +113,22 @@ public class DefaultWorkRepository implements WorkRepository {
 
     @Override
     public void deleteById(Long id) {
+        try (PreparedStatement st = mConnection.prepareStatement("DELETE FROM `work` WHERE `id` = ?")) {
+            st.setLong(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Could not delete work by ID", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void delete(Work work) {
         throw new RuntimeException("Not implemented!");
     }
 
     @Override
-    public void delete(Work entity) {
-        throw new RuntimeException("Not implemented!");
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Work> entities) {
+    public void deleteAll(Iterable<? extends Work> works) {
         throw new RuntimeException("Not implemented!");
     }
 

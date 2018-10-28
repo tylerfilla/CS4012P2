@@ -15,6 +15,8 @@ public interface EduService {
 
     Edu updateEdu(Edu edu);
 
+    void deleteEdu(long eduId);
+
     List<Edu> getUserEdus(long userId);
 
 }

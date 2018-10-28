@@ -37,6 +37,12 @@ public class DefaultEduService implements EduService {
     }
 
     @Override
+    public void deleteEdu(long eduId) {
+        log.debug("Delete edu: " + eduId);
+        mEduRepository.deleteById(eduId);
+    }
+
+    @Override
     public List<Edu> getUserEdus(long userId) {
         List<Edu> edus = new ArrayList<>();
 

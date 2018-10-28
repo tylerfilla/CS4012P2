@@ -30,7 +30,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
@@ -51,7 +50,7 @@ public class ProfileController {
     private WorkService mWorkService;
 
     @GetMapping
-    public String get(Model model, HttpSession session) {
+    public String get(@RequestParam(required = false) Long eduToDelete, @RequestParam(required = false) Long workToDelete, Model model, HttpSession session) {
         // If not logged in, redirect to login page
         if (session.getAttribute("user") == null) {
             log.debug("Not logged in, redirect to login page");
@@ -61,39 +60,30 @@ public class ProfileController {
         // Get user entity
         User user = mUserService.getUser((long) session.getAttribute("user"));
 
+        // If user wants to delete an education history line
+        if (eduToDelete != null) {
+            mEduService.deleteEdu(eduToDelete);
+            return "redirect:/profile?updated=edu";
+        }
+
+        // If user wants to delete a work history line
+        if (workToDelete != null) {
+            mWorkService.deleteWork(workToDelete);
+            return "redirect:/profile?updated=work";
+        }
+
         // Load profile image
-        BufferedImage profileImage = null;
+        BufferedImage profileImage;
         try {
             profileImage = ImageIO.read(user.getProfileImage().getBinaryStream());
-        } catch (IOException e) {
-            log.error("Unable to read profile image (ImageIO)", e);
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            log.error("Unable to read profile image (Blob)", e);
+        } catch (Exception e) {
+            log.error("Unable to read profile image", e);
             throw new RuntimeException(e);
         }
 
         // If a profile image exists
         if (profileImage != null) {
-            // Re-encode original image to JPEG
-            ByteArrayOutputStream outOrig = new ByteArrayOutputStream();
-            BufferedImage profileImageOrig = new BufferedImage(profileImage.getWidth(), profileImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D gfxOrig = profileImageOrig.createGraphics();
-            gfxOrig.drawImage(profileImage, 0, 0, profileImage.getWidth(), profileImage.getHeight(), null);
-            try {
-                ImageIO.write(profileImageOrig, "jpg", outOrig);
-            } catch (IOException e) {
-                log.error("Could not write re-encoded profile image", e);
-                throw new RuntimeException(e);
-            }
-            byte[] bytesOrig = outOrig.toByteArray();
-
-            log.debug("Re-encoded profile image to size " + bytesOrig.length);
-
-            // Place Base64-encoded copy of profile image in model
-            model.addAttribute("profileImageOrig", Base64.getEncoder().encodeToString(bytesOrig));
-
-            // Create a scaled 256-width JPEG, too
+            // Create a scaled 256-width JPEG of the profile image
             ByteArrayOutputStream outScaled = new ByteArrayOutputStream();
             int heightScaled = (int) (profileImage.getHeight() / (float) profileImage.getWidth() * 256);
             BufferedImage profileImage256w = new BufferedImage(256, heightScaled, BufferedImage.TYPE_INT_RGB);
@@ -141,7 +131,7 @@ public class ProfileController {
         User user = mUserService.getUser((long) session.getAttribute("user"));
         user.setFname(fname);
         user.setLname(lname);
-        user.setBirthday(Date.valueOf(LocalDate.parse(birthday))); // TODO: Make this more user friendly
+        user.setBirthday(Date.valueOf(LocalDate.parse(birthday)));
         user.setTimeZone(timeZone);
         mUserService.updateUser(user);
 
@@ -214,6 +204,47 @@ public class ProfileController {
 
         // Redirect to profile
         return "redirect:/profile?updated=contact";
+    }
+
+    @PostMapping("/edu")
+    public String postEdu(@RequestParam String institution, @RequestParam String degreeType, @RequestParam String degreeDiscipline, @RequestParam int year, HttpSession session) {
+        // If not logged in, redirect to login page
+        if (session.getAttribute("user") == null) {
+            log.debug("Not logged in, redirect to login page");
+            return "redirect:/login";
+        }
+
+        // Add education
+        Edu edu = new Edu();
+        edu.setUser((long) session.getAttribute("user"));
+        edu.setInstitution(institution);
+        edu.setDegreeType(degreeType);
+        edu.setDegreeDiscipline(degreeDiscipline);
+        edu.setYear(year);
+        mEduService.updateEdu(edu);
+
+        // Redirect to profile
+        return "redirect:/profile?updated=edu";
+    }
+
+    @PostMapping("/work")
+    public String postWork(@RequestParam String company, @RequestParam String title, @RequestParam int years, HttpSession session) {
+        // If not logged in, redirect to login page
+        if (session.getAttribute("user") == null) {
+            log.debug("Not logged in, redirect to login page");
+            return "redirect:/login";
+        }
+
+        // Add work
+        Work work = new Work();
+        work.setUser((long) session.getAttribute("user"));
+        work.setCompany(company);
+        work.setTitle(title);
+        work.setYears(years);
+        mWorkService.updateWork(work);
+
+        // Redirect to profile
+        return "redirect:/profile?updated=work";
     }
 
 }

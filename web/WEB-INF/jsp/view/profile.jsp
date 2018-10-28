@@ -144,11 +144,46 @@
                     Your education history was successfully updated!
                 </div>
             </c:if>
-            <div>
+            <ul class="list-group">
                 <c:forEach items="${edus}" var="edu">
-                    <div>${edu.institution}</div>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>${edu.degreeType} in ${edu.degreeDiscipline} at ${edu.institution}</span>
+                        <span>
+                            <span class="badge badge-primary badge-pill">${edu.year}</span>
+                            <a href="?eduToDelete=${edu.id}" class="btn" role="button">X</a>
+                        </span>
+                    </li>
                 </c:forEach>
-            </div>
+            </ul>
+            <hr class="my-4">
+            <h5>Add Education History</h5>
+            <form method="post" action="<c:url value="/profile/edu"/>">
+                <div class="form-group row">
+                    <label for="institution" class="col-md-4 col-form-label text-md-right">Institution</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="institution" name="institution" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="degreeType" class="col-md-4 col-form-label text-md-right">Degree Type</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="degreeType" name="degreeType" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="degreeDiscipline" class="col-md-4 col-form-label text-md-right">Degree Discipline</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="degreeDiscipline" name="degreeDiscipline" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="year" class="col-md-4 col-form-label text-md-right">Year of Achievement</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="year" name="year" required/>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Add education</button>
+            </form>
         </div>
     </div><br>
     <div class="card">
@@ -159,11 +194,40 @@
                     Your work history was successfully updated!
                 </div>
             </c:if>
-            <div>
+            <ul class="list-group">
                 <c:forEach items="${works}" var="work">
-                    <div>${work.company}</div>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>${work.title} at ${work.company}</span>
+                        <span>
+                            <span class="badge badge-primary badge-pill">${work.years} years</span>
+                            <a href="?workToDelete=${work.id}" class="btn" role="button">X</a>
+                        </span>
+                    </li>
                 </c:forEach>
-            </div>
+            </ul>
+            <hr class="my-4">
+            <h5>Add Work History</h5>
+            <form method="post" action="<c:url value="/profile/work"/>">
+                <div class="form-group row">
+                    <label for="company" class="col-md-4 col-form-label text-md-right">Company</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="company" name="company" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="title" name="title" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="years" class="col-md-4 col-form-label text-md-right">Years of Service</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="years" name="years" required/>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Add work</button>
+            </form>
         </div>
     </div>
 </div>

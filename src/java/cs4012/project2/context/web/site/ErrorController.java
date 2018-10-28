@@ -1,8 +1,9 @@
 package cs4012.project2.context.web.site;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,13 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("error")
 public class ErrorController {
 
-    @GetMapping
-    public String get(Model model, HttpServletRequest request) {
-        // Get error code
-        int code = (Integer) request.getAttribute("javax.servlet.error.status_code");
+    private static final Logger log = LogManager.getLogger();
 
-        // Store error code in model
-        model.addAttribute("code", code);
+    @RequestMapping
+    public String request(Model model, HttpServletRequest request) {
+        // Get error throwable
+        Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
+        log.error("Serving error page", throwable);
+
+        // Prepare model
+        model.addAttribute("code", request.getAttribute("javax.servlet.error.status_code"));
+        model.addAttribute("throwable", throwable);
 
         return "error";
     }
