@@ -146,7 +146,7 @@ public class ProfileController {
         mUserService.updateUser(user);
 
         // Redirect to profile
-        return "redirect:/profile";
+        return "redirect:/profile?updated=basic";
     }
 
     @PostMapping("/image")
@@ -170,7 +170,7 @@ public class ProfileController {
         mUserService.updateUser(user);
 
         // Redirect to profile
-        return "redirect:/profile";
+        return "redirect:/profile?updated=image";
     }
 
     @PostMapping("/password")
@@ -189,7 +189,7 @@ public class ProfileController {
         mUserService.updateUser(user);
 
         // Redirect to profile
-        return "redirect:/profile";
+        return "redirect:/profile?updated=password";
     }
 
     @PostMapping("/contactInfo")
@@ -213,7 +213,7 @@ public class ProfileController {
         mUserService.updateUser(user);
 
         // Redirect to profile
-        return "redirect:/profile";
+        return "redirect:/profile?updated=contact";
     }
 
 }

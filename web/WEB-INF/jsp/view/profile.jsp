@@ -14,49 +14,158 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>Profile</h1>
-<a href="<c:url value="/login?logout=1"/>">Log out</a>
-<img src="data:image/jpeg;base64,${profileImageOrig}"/>
-<h3>Basic Info</h3>
-<form method="post" action="<c:url value="/profile/basicInfo"/>">
-    <input type="text" name="fname" placeholder="${user.fname}"/><br>
-    <input type="text" name="lname" placeholder="${user.lname}"/><br>
-    <input type="text" name="birthday" placeholder="${user.birthday}"/><br>
-    <input type="text" name="timeZone" placeholder="${user.timeZone}"/><br>
-    <input type="submit" value="Update Basic Info"/>
-</form>
-<h3>Profile Image</h3>
-<img src="data:image/jpeg;base64,${profileImageScaled}"/>
-<form method="post" enctype="multipart/form-data" action="<c:url value="/profile/image"/>">
-    <input type="file" name="image"/><br>
-    <input type="submit" value="Update Profile Image"/>
-</form>
-<h3>Password</h3>
-<form method="post" action="<c:url value="/profile/password"/>">
-    <input type="password" name="password" placeholder="New Password"/><br>
-    <input type="submit" value="Update Password"/>
-</form>
-<h3>Contact Info</h3>
-<form method="post" action="<c:url value="/profile/contactInfo"/>">
-    <input type="text" name="addrBody" placeholder="${user.addrBody}"/><br>
-    <input type="text" name="addrCity" placeholder="${user.addrCity}"/><br>
-    <input type="text" name="addrState" placeholder="${user.addrState}"/><br>
-    <input type="text" name="addrZip" placeholder="${user.addrZip}"/><br>
-    <input type="text" name="phoneHome" placeholder="${user.phoneHome}"/><br>
-    <input type="text" name="phoneCell" placeholder="${user.phoneCell}"/><br>
-    <input type="submit" value="Update Contact Info"/>
-</form>
-<h3>Education</h3>
-<div>
-    <c:forEach items="${edus}" var="edu">
-        <div>${edu.institution}</div>
-    </c:forEach>
-</div>
-<h3>Work Experience</h3>
-<div>
-    <c:forEach items="${works}" var="work">
-        <div>${work.company}</div>
-    </c:forEach>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">${user.fname}'s Profile</h1>
+        <p class="lead">This is your personal profile. Feel free to customize it as you desire.</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="<c:url value="/login?logout=1"/>" role="button">Log Out</a>
+    </div>
+    <div class="card">
+        <div class="card-header">Profile Image</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "image"}'>
+                <div class="alert alert-success" role="alert">
+                    Your profile image was successfully updated!
+                </div>
+            </c:if>
+            <img src="data:image/jpeg;base64,${profileImageScaled}"/>
+            <form method="post" enctype="multipart/form-data" action="<c:url value="/profile/image"/>">
+                <input type="file" class="form-control-file" name="image" required/><br>
+                <button class="btn btn-primary">Update Profile Image</button>
+            </form>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-header">Basic Info</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "basic"}'>
+                <div class="alert alert-success" role="alert">
+                    Your basic info was successfully updated!
+                </div>
+            </c:if>
+            <form method="post" action="<c:url value="/profile/basicInfo"/>">
+                <div class="form-group row">
+                    <label for="fname" class="col-md-4 col-form-label text-md-right">First Name</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="fname" name="fname" value="${user.fname}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lname" class="col-md-4 col-form-label text-md-right">Last Name</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="lname" name="lname" value="${user.lname}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="birthday" class="col-md-4 col-form-label text-md-right">Birthday</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="birthday" name="birthday" value="${user.birthday}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="timeZone" class="col-md-4 col-form-label text-md-right">Time Zone</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="timeZone" name="timeZone" value="${user.timeZone}" required/>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Update Basic Info</button>
+            </form>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-header">Password</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "password"}'>
+                <div class="alert alert-success" role="alert">
+                    Your password was successfully updated!
+                </div>
+            </c:if>
+            <form method="post" action="<c:url value="/profile/password"/>">
+                <input type="password" class="form-control" name="password" placeholder="New Password" required/><br>
+                <button class="btn btn-primary">Update Password</button>
+            </form>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-header">Contact Info</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "contact"}'>
+                <div class="alert alert-success" role="alert">
+                    Your contact info was successfully updated!
+                </div>
+            </c:if>
+            <form method="post" action="<c:url value="/profile/contactInfo"/>">
+                <div class="form-group row">
+                    <label for="addrBody" class="col-md-4 col-form-label text-md-right">Address</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="addrBody" name="addrBody" value="${user.addrBody}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrCity" class="col-md-4 col-form-label text-md-right">City</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="addrCity" name="addrCity" value="${user.addrCity}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrState" class="col-md-4 col-form-label text-md-right">State</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="addrState" name="addrState" value="${user.addrState}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrZip" class="col-md-4 col-form-label text-md-right">ZIP Code</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="addrZip" name="addrZip" value="${user.addrZip}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phoneHome" class="col-md-4 col-form-label text-md-right">Home Phone</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="phoneHome" name="phoneHome" value="${user.phoneHome}" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phoneCell" class="col-md-4 col-form-label text-md-right">Cell Phone</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="phoneCell" name="phoneCell" value="${user.phoneCell}" required/>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Update Contact Info</button>
+            </form>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-header">Education History</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "edu"}'>
+                <div class="alert alert-success" role="alert">
+                    Your education history was successfully updated!
+                </div>
+            </c:if>
+            <div>
+                <c:forEach items="${edus}" var="edu">
+                    <div>${edu.institution}</div>
+                </c:forEach>
+            </div>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-header">Work History</div>
+        <div class="card-body">
+            <c:if test='${param.updated eq "work"}'>
+                <div class="alert alert-success" role="alert">
+                    Your work history was successfully updated!
+                </div>
+            </c:if>
+            <div>
+                <c:forEach items="${works}" var="work">
+                    <div>${work.company}</div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

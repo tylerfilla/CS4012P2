@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="addrBody" class="col-md-4 col-form-label text-md-right">Address Body</label>
+                    <label for="addrBody" class="col-md-4 col-form-label text-md-right">Address</label>
                     <div class="col-md-6">
                         <form:input type="addrBody" class="form-control" id="addrBody" path="addrBody" required="1"/>
                     </div>
