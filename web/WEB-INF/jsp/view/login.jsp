@@ -1,5 +1,5 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -28,7 +28,7 @@
                 <div class="form-group row">
                     <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
                     <div class="col-md-6">
-                        <form:input type="password" class="form-control" id="password" path="password"/>
+                        <form:input type="password" class="form-control" id="password" path="password" required="1"/>
                     </div>
                 </div>
                 <div class="col-md-6 offset-md-4">

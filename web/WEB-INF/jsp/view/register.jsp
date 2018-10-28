@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
@@ -9,18 +10,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>Register</h1>
-<%--@elvariable id="registration" type="cs4012.project2.context.web.site.RegisterController$Registration"--%>
-<form:form method="post" modelAttribute="registration">
-    <form:input type="text" path="username"/><br>
-    <form:input type="password" path="password"/><br>
-    <form:input type="text" path="fname"/><br>
-    <form:input type="text" path="lname"/><br>
-    <form:input type="text" path="addrBody"/><br>
-    <form:input type="text" path="addrCity"/><br>
-    <form:input type="text" path="addrState"/><br>
-    <form:input type="text" path="addrZip"/><br>
-    <input type="submit" value="Submit"/>
-</form:form>
+<div class="container">
+    <div class="card">
+        <div class="card-header">Register</div>
+        <div class="card-body">
+            <%--@elvariable id="registration" type="cs4012.project2.context.web.site.RegisterController$Registration"--%>
+            <form:form method="post" modelAttribute="registration">
+                <div class="form-group row">
+                    <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
+                    <div class="col-md-6">
+                        <form:input type="text" class="form-control" id="username" path="username" required="1" autofocus="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                    <div class="col-md-6">
+                        <form:input type="password" class="form-control" id="password" path="password" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="fname" class="col-md-4 col-form-label text-md-right">First Name</label>
+                    <div class="col-md-6">
+                        <form:input type="fname" class="form-control" id="fname" path="fname" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lname" class="col-md-4 col-form-label text-md-right">Last Name</label>
+                    <div class="col-md-6">
+                        <form:input type="lname" class="form-control" id="lname" path="lname" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrBody" class="col-md-4 col-form-label text-md-right">Address Body</label>
+                    <div class="col-md-6">
+                        <form:input type="addrBody" class="form-control" id="addrBody" path="addrBody" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrCity" class="col-md-4 col-form-label text-md-right">City</label>
+                    <div class="col-md-6">
+                        <form:input type="addrCity" class="form-control" id="addrCity" path="addrCity" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrState" class="col-md-4 col-form-label text-md-right">State</label>
+                    <div class="col-md-6">
+                        <form:input type="addrState" class="form-control" id="addrState" path="addrState" required="1"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addrZip" class="col-md-4 col-form-label text-md-right">ZIP Code</label>
+                    <div class="col-md-6">
+                        <form:input type="addrZip" class="form-control" id="addrZip" path="addrZip" required="1"/>
+                    </div>
+                </div>
+                <div class="col-md-6 offset-md-4">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a href="<c:url value="/login"/>" class="btn btn-link">Back to login</a>
+                </div>
+            </form:form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
