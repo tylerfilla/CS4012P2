@@ -10,10 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -28,7 +25,13 @@ public class LoginController {
     private AuthService mAuthService;
 
     @GetMapping
-    public String get(Model model, HttpSession session) {
+    public String get(@RequestParam(required = false) String logout, Model model, HttpSession session) {
+        // If user wants to log out
+        if (logout != null) {
+            log.debug("Logging out user: " + session.getAttribute("user"));
+            session.removeAttribute("user");
+        }
+
         // If logged in, redirect to profile page
         if (session.getAttribute("user") != null) {
             log.debug("Logged in, redirect to profile page");

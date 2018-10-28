@@ -51,17 +51,10 @@ public class ProfileController {
     private WorkService mWorkService;
 
     @GetMapping
-    public String get(@RequestParam(required = false) String logout, Model model, HttpSession session) {
+    public String get(Model model, HttpSession session) {
         // If not logged in, redirect to login page
         if (session.getAttribute("user") == null) {
             log.debug("Not logged in, redirect to login page");
-            return "redirect:/login";
-        }
-
-        // If user wants to log out
-        if (logout != null) {
-            log.debug("Logging out user: " + session.getAttribute("user"));
-            session.removeAttribute("user");
             return "redirect:/login";
         }
 

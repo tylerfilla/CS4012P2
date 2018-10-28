@@ -9,13 +9,16 @@
 <html>
 <head>
     <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>Profile</h1>
-<a href="?logout=1">Log out</a>
+<a href="<c:url value="/login?logout=1"/>">Log out</a>
 <img src="data:image/jpeg;base64,${profileImageOrig}"/>
 <h3>Basic Info</h3>
-<form method="post" action="/profile/basicInfo">
+<form method="post" action="<c:url value="/profile/basicInfo"/>">
     <input type="text" name="fname" placeholder="${user.fname}"/><br>
     <input type="text" name="lname" placeholder="${user.lname}"/><br>
     <input type="text" name="birthday" placeholder="${user.birthday}"/><br>
@@ -24,17 +27,17 @@
 </form>
 <h3>Profile Image</h3>
 <img src="data:image/jpeg;base64,${profileImageScaled}"/>
-<form method="post" enctype="multipart/form-data" action="/profile/image">
+<form method="post" enctype="multipart/form-data" action="<c:url value="/profile/image"/>">
     <input type="file" name="image"/><br>
     <input type="submit" value="Update Profile Image"/>
 </form>
 <h3>Password</h3>
-<form method="post" action="/profile/password">
+<form method="post" action="<c:url value="/profile/password"/>">
     <input type="password" name="password" placeholder="New Password"/><br>
     <input type="submit" value="Update Password"/>
 </form>
 <h3>Contact Info</h3>
-<form method="post" action="/profile/contactInfo">
+<form method="post" action="<c:url value="/profile/contactInfo"/>">
     <input type="text" name="addrBody" placeholder="${user.addrBody}"/><br>
     <input type="text" name="addrCity" placeholder="${user.addrCity}"/><br>
     <input type="text" name="addrState" placeholder="${user.addrState}"/><br>
