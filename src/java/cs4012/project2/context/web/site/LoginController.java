@@ -47,10 +47,11 @@ public class LoginController {
     @PostMapping
     public String post(@ModelAttribute User user, HttpSession session) {
         // Do the login
-        doLogin(user, session);
-
-        // Redirect to index
-        return "redirect:/";
+        if (doLogin(user, session)) {
+            return "redirect:/";
+        } else {
+            return "redirect:/login?badcreds=1";
+        }
     }
 
     /**
@@ -60,8 +61,9 @@ public class LoginController {
      *
      * @param user    The user details
      * @param session The HTTP session
+     * @return Whether login succeeded
      */
-    private void doLogin(User user, HttpSession session) {
+    private boolean doLogin(User user, HttpSession session) {
         log.debug("Logging in user: " + user.getUsername());
 
         // Try to log the user in
@@ -69,9 +71,11 @@ public class LoginController {
         if ((id = mAuthService.checkUser(user.getUsername(), user.getPassword())) >= 0) {
             log.debug("Login successful for user: " + user.getUsername());
             session.setAttribute("user", id);
+            return true;
         } else {
             log.debug("Login failed for user: " + user.getUsername());
             session.removeAttribute("user");
+            return false;
         }
     }
 

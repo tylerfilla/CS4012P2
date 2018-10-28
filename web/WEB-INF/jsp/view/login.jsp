@@ -14,9 +14,23 @@
     <div class="card">
         <div class="card-header">Log In</div>
         <div class="card-body">
-            <c:if test="${not empty param.logout}">
-                <div class="alert alert-success" role="alert">You were successfully logged out. Have a nice day!</div>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty param.badcreds}">
+                    <div class="alert alert-danger" role="alert">
+                        Incorrect username or password!
+                    </div>
+                </c:when>
+                <c:when test="${not empty param.logout}">
+                    <div class="alert alert-success" role="alert">
+                        You were successfully logged out. Have a nice day!
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-primary" role="alert">
+                        Welcome! Please log in or register below.
+                    </div>
+                </c:otherwise>
+            </c:choose>
             <%--@elvariable id="user" type="cs4012.project2.context.web.site.LoginController$User"--%>
             <form:form method="post" modelAttribute="user">
                 <div class="form-group row">
